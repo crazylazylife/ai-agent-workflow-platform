@@ -1,0 +1,34 @@
+{
+  "$schema_note": "Replayed by packages/evals/runner.py against the live API. With the MOCK system, web_search always returns {Asana, Trello, ClickUp} and research_v1 always hits the approval gate — so expected_contains/expects_approval are written against that. A real LLM+tools would enable diverse facts. Tasks tagged _expect:fail are intentional regressions to prove each check discriminates.",
+  "fields": {
+    "id": "stable unique id",
+    "prompt": "task text submitted to the platform",
+    "workflow": "workflow slug (default research_v1)",
+    "category": "research | cost | tools | approval | ...",
+    "expected_contains": "substrings the run transcript MUST contain",
+    "expected_tools": "tool_names the run SHOULD call",
+    "expects_approval": "true if the run should pause for human approval",
+    "forbidden_fields": "substrings whose presence indicates hallucination",
+    "max_cost_usd": "hard cost budget",
+    "max_latency_ms": "latency budget"
+  },
+  "tasks": [
+    { "id": "research_001", "prompt": "Find the top project management tools for startups and summarize them.", "category": "research", "expected_contains": ["Asana", "Trello", "ClickUp"], "expected_tools": ["web_search"], "expects_approval": true, "forbidden_fields": [], "max_cost_usd": 0.05, "max_latency_ms": 30000 },
+    { "id": "research_002", "prompt": "Compare Asana and Trello for a small team.", "category": "research", "expected_contains": ["Asana", "Trello"], "expected_tools": ["web_search"], "expects_approval": true, "forbidden_fields": [], "max_cost_usd": 0.05, "max_latency_ms": 30000 },
+    { "id": "research_003", "prompt": "What kanban tools should a startup consider?", "category": "research", "expected_contains": ["Trello"], "expected_tools": ["web_search"], "expects_approval": true, "forbidden_fields": [], "max_cost_usd": 0.05, "max_latency_ms": 30000 },
+    { "id": "research_004", "prompt": "Recommend an all-in-one productivity suite.", "category": "research", "expected_contains": ["ClickUp"], "expected_tools": ["web_search"], "expects_approval": true, "forbidden_fields": [], "max_cost_usd": 0.05, "max_latency_ms": 30000 },
+    { "id": "research_005", "prompt": "List three task trackers and their positioning.", "category": "research", "expected_contains": ["Asana", "Trello", "ClickUp"], "expected_tools": ["web_search"], "expects_approval": true, "forbidden_fields": [], "max_cost_usd": 0.05, "max_latency_ms": 30000 },
+    { "id": "research_006", "prompt": "Which tools help with sprint planning?", "category": "research", "expected_contains": ["Asana"], "expected_tools": ["web_search"], "expects_approval": true, "forbidden_fields": [], "max_cost_usd": 0.05, "max_latency_ms": 30000 },
+    { "id": "research_007", "prompt": "Summarize popular boards-based tools.", "category": "research", "expected_contains": ["Trello", "ClickUp"], "expected_tools": ["web_search"], "expects_approval": true, "forbidden_fields": [], "max_cost_usd": 0.05, "max_latency_ms": 30000 },
+    { "id": "research_008", "prompt": "Give an overview of startup-friendly PM software.", "category": "research", "expected_contains": ["Asana", "ClickUp"], "expected_tools": ["web_search"], "expects_approval": true, "forbidden_fields": [], "max_cost_usd": 0.05, "max_latency_ms": 30000 },
+    { "id": "research_009", "prompt": "Research collaboration tools for remote teams.", "category": "research", "expected_contains": ["Asana", "Trello", "ClickUp"], "expected_tools": ["web_search"], "expects_approval": true, "forbidden_fields": [], "max_cost_usd": 0.05, "max_latency_ms": 30000 },
+    { "id": "research_010", "prompt": "What are good lightweight task apps?", "category": "research", "expected_contains": ["Trello"], "expected_tools": ["web_search"], "expects_approval": true, "forbidden_fields": [], "max_cost_usd": 0.05, "max_latency_ms": 30000 },
+
+    { "id": "fact_fail_001__expect_fail", "prompt": "Research enterprise CRMs and summarize pricing.", "category": "research", "expected_contains": ["Salesforce", "HubSpot"], "expected_tools": ["web_search"], "expects_approval": true, "forbidden_fields": [], "max_cost_usd": 0.05, "max_latency_ms": 30000 },
+    { "id": "fact_fail_002__expect_fail", "prompt": "Find Monday.com alternatives.", "category": "research", "expected_contains": ["Monday.com"], "expected_tools": ["web_search"], "expects_approval": true, "forbidden_fields": [], "max_cost_usd": 0.05, "max_latency_ms": 30000 },
+    { "id": "cost_fail_001__expect_fail", "prompt": "Find the top PM tools (tiny budget).", "category": "cost", "expected_contains": ["Asana"], "expected_tools": ["web_search"], "expects_approval": true, "forbidden_fields": [], "max_cost_usd": 0.00001, "max_latency_ms": 30000 },
+    { "id": "tools_fail_001__expect_fail", "prompt": "Compute a comparison score for these tools.", "category": "tools", "expected_contains": ["Asana"], "expected_tools": ["calculator"], "expects_approval": true, "forbidden_fields": [], "max_cost_usd": 0.05, "max_latency_ms": 30000 },
+    { "id": "approval_fail_001__expect_fail", "prompt": "Quickly list PM tools, no review needed.", "category": "approval", "expected_contains": ["Trello"], "expected_tools": ["web_search"], "expects_approval": false, "forbidden_fields": [], "max_cost_usd": 0.05, "max_latency_ms": 30000 },
+    { "id": "halluc_fail_001__expect_fail", "prompt": "Summarize PM tools without inventing competitors.", "category": "research", "expected_contains": ["Asana"], "expected_tools": ["web_search"], "expects_approval": true, "forbidden_fields": ["ClickUp"], "max_cost_usd": 0.05, "max_latency_ms": 30000 }
+  ]
+}

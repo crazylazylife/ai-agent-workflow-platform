@@ -1,0 +1,7 @@
+# Phase 0 dependencies. We'll add SQLAlchemy/Alembic/Celery in later phases.
+fastapi==0.115.0
+uvicorn[standard]==0.30.6
+pydantic-settings==2.5.2
+asyncpg==0.29.0          # async Postgres driver
+redis==5.0.8             # async-capable redis client (redis.asyncio)
+celery[redis]==5.4.0     # client only — enqueues run_step by name (no worker import)

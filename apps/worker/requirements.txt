@@ -1,0 +1,3 @@
+# Worker deps. awp-shared (models/db) is installed separately as an editable package.
+celery[redis]==5.4.0
+openai>=1.40        # OpenAI-compatible client used for ALL real providers (Groq/Ollama/…)

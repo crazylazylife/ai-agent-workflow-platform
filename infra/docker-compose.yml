@@ -1,0 +1,48 @@
+name: agent-workflow-platform
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: awp-postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-awp}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-awp}
+      POSTGRES_DB: ${POSTGRES_DB:-awp}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      # Compose waits for this to pass before marking the service healthy.
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-awp} -d ${POSTGRES_DB:-awp}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  redis:
+    image: redis:7
+    container_name: awp-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  jaeger:
+    # all-in-one bundles the OTLP collector + storage + query UI in one container.
+    image: jaegertracing/all-in-one:1.57
+    container_name: awp-jaeger
+    environment:
+      COLLECTOR_OTLP_ENABLED: "true"   # accept OpenTelemetry traces on 4317/4318
+    ports:
+      - "16686:16686"   # Jaeger web UI
+      - "4317:4317"     # OTLP gRPC  (apps export traces here)
+      - "4318:4318"     # OTLP HTTP
+
+volumes:
+  postgres_data:
+  redis_data:

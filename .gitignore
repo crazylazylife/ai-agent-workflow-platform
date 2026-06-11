@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+
+# Celery beat schedule (generated at runtime)
+celerybeat-schedule
+celerybeat-schedule.*
+celerybeat.pid
+
+# Env / secrets
+.env
+
+# Node / Next.js (Phase 1+)
+node_modules/
+.next/
+dist/
+
+# Logs
+*.log
+
+# Personal — kept local, not published
+docs/resume.md
+docs/demo.md
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
